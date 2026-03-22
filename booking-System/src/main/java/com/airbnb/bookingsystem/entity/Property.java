@@ -27,6 +27,12 @@ public class Property {
 
 	private int maxGuests;
 
+	@ElementCollection
+	private List<String> images;
+
+	@ElementCollection
+	private List<String> documents;
+
 	@ManyToOne
 	@JoinColumn(name ="host_id")
 	private Host host;
