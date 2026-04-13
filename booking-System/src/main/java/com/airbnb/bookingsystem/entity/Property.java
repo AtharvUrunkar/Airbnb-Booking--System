@@ -38,6 +38,6 @@ public class Property {
 	private Host host;
 
 	@OneToMany(mappedBy = "property", cascade = CascadeType.ALL)
-	private List<PropertyAvailbility> availability;
+	private List<PropertyAvailability> availability;
 
 }

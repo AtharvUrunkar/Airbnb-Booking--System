@@ -1,4 +1,10 @@
 package com.airbnb.bookingsystem.entity;
 
-public class PaymentStatus {
+import lombok.Getter;
+import lombok.Setter;
+
+
+public enum PaymentStatus {
+	SUCCESS,
+	FAILED
 }

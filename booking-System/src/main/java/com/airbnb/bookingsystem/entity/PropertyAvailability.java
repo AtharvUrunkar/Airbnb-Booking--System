@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PropertyAvailbility {
+public class PropertyAvailability {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

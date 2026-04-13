@@ -1,8 +1,12 @@
 package com.airbnb.bookingsystem.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.time.LocalDate;
+@Getter
+@Setter
 @Entity
 @Table(name = "bookings")
 public class Booking {

@@ -1,7 +1,7 @@
 package com.airbnb.bookingsystem.service;
 
 import com.airbnb.bookingsystem.entity.Property;
-import com.airbnb.bookingsystem.entity.PropertyAvailbility;
+import com.airbnb.bookingsystem.entity.PropertyAvailability;
 import com.airbnb.bookingsystem.repository.PropertyAvailabilityRepository;
 import com.airbnb.bookingsystem.repository.PropertyRepository;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class PropertyAvailabilityService {
 
 		while (!currentDate.isAfter(endDate)) {
 
-			PropertyAvailbility availability = new PropertyAvailbility();
+			PropertyAvailability availability = new PropertyAvailability();
 			availability.setProperty(property);
 			availability.setDate(currentDate);
 			availability.setAvailable(true);
@@ -49,8 +49,8 @@ public class PropertyAvailabilityService {
 
 		while (!currentDate.isAfter(endDate)) {
 
-			PropertyAvailbility availability =
-					(PropertyAvailbility) availabilityRepository.findByProperty_IdAndDate(propertyId, currentDate)
+			PropertyAvailability availability =
+					(PropertyAvailability) availabilityRepository.findByProperty_IdAndDate(propertyId, currentDate)
 							.orElse(null);
 
 			// If no record OR not available → fail
