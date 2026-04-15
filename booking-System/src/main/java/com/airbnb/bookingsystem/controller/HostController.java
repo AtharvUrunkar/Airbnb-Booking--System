@@ -14,8 +14,15 @@ public class HostController {
 		this.hostService = hostService;
 	}
 
+	// Create Host
 	@PostMapping
 	public Host createHost(@RequestParam Long userId) {
 		return hostService.createHost(userId);
+	}
+
+	// Approve Host (Admin simulation)
+	@PutMapping("/approve/{hostId}")
+	public Host approveHost(@PathVariable Long hostId) {
+		return hostService.approveHost(hostId);
 	}
 }

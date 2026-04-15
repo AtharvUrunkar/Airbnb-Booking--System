@@ -1,5 +1,6 @@
 package com.airbnb.bookingsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,7 +24,7 @@ public class Property {
 
 	private String location;
 
-	private double pricePerNight;
+	private Double pricePerNight;
 
 	private int maxGuests;
 
@@ -35,6 +36,7 @@ public class Property {
 
 	@ManyToOne
 	@JoinColumn(name ="host_id")
+	@JsonIgnore
 	private Host host;
 
 	@OneToMany(mappedBy = "property", cascade = CascadeType.ALL)

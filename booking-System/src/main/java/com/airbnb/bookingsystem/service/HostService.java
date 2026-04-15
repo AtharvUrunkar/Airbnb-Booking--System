@@ -41,4 +41,23 @@ public class HostService
 		return hostRepository.save(host);
 	}
 
+	public Host approveHost(Long hostId) {
+
+		// 1️⃣ Fetch host
+		Host host = hostRepository.findById(hostId)
+				.orElseThrow(() -> new RuntimeException("Host not found"));
+
+		// 2️⃣ Validate current status
+		if (host.getStatus() == HostStatus.APPROVED) {
+			throw new RuntimeException("Host already approved");
+		}
+
+		// 3️⃣ Approve host
+		host.setStatus(HostStatus.APPROVED);
+
+		// 4️⃣ Save
+		return hostRepository.save(host);
+	}
+
+
 }

@@ -1,6 +1,7 @@
 package com.airbnb.bookingsystem.service;
 
 import com.airbnb.bookingsystem.entity.Host;
+import com.airbnb.bookingsystem.entity.HostStatus;
 import com.airbnb.bookingsystem.entity.Property;
 import com.airbnb.bookingsystem.entity.User;
 import com.airbnb.bookingsystem.repository.HostRepository;
@@ -18,32 +19,26 @@ public class PropertyService {
 		this.propertyRepository = propertyRepository;
 	}
 
-	public Property createProperty(Property property){
+	public Property createProperty(Long hostId, Property property) {
 
 		if (property == null) {
 			throw new RuntimeException("Property cannot be null");
 		}
 
-		if (property.getHost() == null) {
-			throw new RuntimeException("Host is required to create Property");
-		}
-
-		if (property.getHost().getId() == null) {
-			throw new RuntimeException("Host ID is required");
-		}
-		Long hostId = property.getHost().getId();
-
-		// 3️⃣ Fetch Host from DB
+		// 1️⃣ Fetch host
 		Host host = hostRepository.findById(hostId)
-				.orElseThrow(() -> new RuntimeException("Host not found with id: " + hostId));
+				.orElseThrow(() -> new RuntimeException("Host not found"));
 
-		// 4️⃣ Attach managed Host entity
+		// 2️⃣ Validate host approval
+		if (host.getStatus() != HostStatus.APPROVED) {
+			throw new RuntimeException("Host is not approved");
+		}
+
+		// 3️⃣ Attach host
 		property.setHost(host);
-  //After adding the property host becomes real to the system no matter it is accepted by admin as a host if you dont have registered property system not consider it one.!
-		// 5️⃣ Save Property
+
+		// 4️⃣ Save
 		return propertyRepository.save(property);
-
-
 	}
 
 	}
