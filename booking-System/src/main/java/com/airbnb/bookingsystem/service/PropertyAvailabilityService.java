@@ -7,6 +7,7 @@ import com.airbnb.bookingsystem.repository.PropertyRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class PropertyAvailabilityService {
@@ -20,10 +21,9 @@ public class PropertyAvailabilityService {
 		this.propertyRepository = propertyRepository;
 	}
 
-	// 1️⃣ Add availability for date range
+	// ✅ Add availability for date range
 	public void addAvailability(Long propertyId, LocalDate startDate, LocalDate endDate) {
 
-		// Fetch property
 		Property property = propertyRepository.findById(propertyId)
 				.orElseThrow(() -> new RuntimeException("Property not found"));
 
@@ -31,18 +31,24 @@ public class PropertyAvailabilityService {
 
 		while (!currentDate.isAfter(endDate)) {
 
-			PropertyAvailability availability = new PropertyAvailability();
-			availability.setProperty(property);
-			availability.setDate(currentDate);
-			availability.setAvailable(true);
+			// 🔥 CHECK duplicate
+			Optional<PropertyAvailability> existing =
+					availabilityRepository.findByProperty_IdAndDate(propertyId, currentDate);
 
-			availabilityRepository.save(availability);
+			if (existing.isEmpty()) {
+				PropertyAvailability availability = new PropertyAvailability();
+				availability.setProperty(property);
+				availability.setDate(currentDate);
+				availability.setAvailable(true);
+
+				availabilityRepository.save(availability);
+			}
 
 			currentDate = currentDate.plusDays(1);
 		}
 	}
 
-	// 2️⃣ Check availability
+	// ✅ Check availability
 	public boolean isAvailable(Long propertyId, LocalDate startDate, LocalDate endDate) {
 
 		LocalDate currentDate = startDate;
@@ -50,10 +56,10 @@ public class PropertyAvailabilityService {
 		while (!currentDate.isAfter(endDate)) {
 
 			PropertyAvailability availability =
-					(PropertyAvailability) availabilityRepository.findByProperty_IdAndDate(propertyId, currentDate)
+					availabilityRepository.findByProperty_IdAndDate(propertyId, currentDate)
 							.orElse(null);
 
-			// If no record OR not available → fail
+			// ❌ If missing OR not available → reject
 			if (availability == null || !availability.isAvailable()) {
 				return false;
 			}

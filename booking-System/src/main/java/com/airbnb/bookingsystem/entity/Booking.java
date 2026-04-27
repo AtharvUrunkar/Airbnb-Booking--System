@@ -1,5 +1,6 @@
 package com.airbnb.bookingsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,11 +18,13 @@ public class Booking {
 
 	// Many bookings → one user
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "user_id")
 	private User user;
 
 	// Many bookings → one property
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "property_id")
 	private Property property;
 
